@@ -464,6 +464,7 @@ export const ReportCard = () => {
                     <div className="flex items-end gap-3">
                       <Textarea placeholder="Strengths and Next Steps" {...field} />
                       <Button
+                        type="button"
                         onClick={() => {
                           getReportCardComments();
                         }}>

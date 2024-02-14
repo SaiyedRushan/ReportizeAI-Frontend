@@ -24,12 +24,6 @@ export default function Dashboard() {
     { id: 2, name: "Grade 1B Math" },
     { id: 3, name: "Grade 2A Math" },
     { id: 4, name: "Grade 2B Math" },
-    { id: 5, name: "Grade 3A Math" },
-    { id: 6, name: "Grade 3B Math" },
-    { id: 7, name: "Grade 4A Math" },
-    { id: 8, name: "Grade 4B Math" },
-    { id: 9, name: "Grade 5A Math" },
-    { id: 10, name: "Grade 5B Math" },
   ];
 
   const dummyStudents = [
@@ -50,7 +44,7 @@ export default function Dashboard() {
       <div className="flex py-10 gap-20">
         <div className="flex flex-col">
           <p className="text-2xl text-center mb-6">Your Classes</p>
-          <div className="border-2 rounded-lg p-3 h-80 overflow-scroll">
+          <div className="border-2 rounded-lg p-3 h-80 overflow-scroll w-[200px]">
             {dummyClasses.map((item, index) => (
               <div key={index} className="border-b-2 py-2">
                 <Link to={`/dashboard/class/${item.id}`}>
@@ -63,7 +57,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col ">
           <p className="text-2xl text-center mb-6">Your Students</p>
-          <div className="border-2 rounded-lg p-3 h-80 overflow-scroll">
+          <div className="border-2 rounded-lg p-3 h-80 overflow-scroll w-[200px]">
             {dummyStudents.map((item, index) => (
               <div key={index} className="border-b-2 py-2">
                 <Link to={`/dashboard/class/${item.classId}/${item.id}/report`}>
