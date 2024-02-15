@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { SignUpButton } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -37,9 +36,9 @@ export default function Home() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-2xl font-semibold mb-4">Free</h3>
                 <p className="text-lg mb-4">Basic features to get you started. 10 Report card credits. Manage your class and students.</p>
-                <SignUpButton>
-                  <Button>Sign Up</Button>
-                </SignUpButton>
+                <Button>
+                  <Link to={"/pricing"}>Sign Up</Link>
+                </Button>
               </div>
             </div>
             <div className="w-full md:w-1/3 px-4 mb-8">
@@ -55,7 +54,9 @@ export default function Home() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-2xl font-semibold mb-4">Professional</h3>
                 <p className="text-lg mb-4">40 Report card credits. And state-of-the-art AI to help you write better and more personalized feedback faster.</p>
-                <Button>Sign Up</Button>
+                <Button>
+                  <Link to={"/pricing"}>Sign Up</Link>
+                </Button>
               </div>
             </div>
           </div>
