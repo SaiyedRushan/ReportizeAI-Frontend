@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { ReportCardGenerator } from "@/components/ReportCardGenerator";
@@ -13,69 +14,112 @@ import { Textarea } from "@/components/ui/textarea";
 import { LucideWand } from "lucide-react";
 
 export const ReportCard = () => {
-  async function getReportCardComments() {
+  async function getStrengthsAndNextStepsForTraits() {
     form.setValue(
-      "strengthsNextSteps",
+      "strengthsNextStepsLSWH",
+      `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
+    );
+  }
+
+  async function getStrengthsAndNextStepsForSubjects() {
+    form.setValue(
+      "strengthsNextStepsSubjects",
       `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
     );
   }
 
   const { id, studentId } = useParams();
 
+  const threePlans = [
+    { value: "ESLELD", label: "ESL/ELD" },
+    { value: "IEP", label: "IEP" },
+    { value: "NA", label: "N/A" },
+  ];
+  const fourPlans = [
+    { value: "ESLELD", label: "ESL/ELD" },
+    { value: "IEP", label: "IEP" },
+    { value: "French", label: "French" },
+    { value: "NA", label: "N/A" },
+  ];
+
+  const sixPlans = [
+    { value: "ESLELD", label: "ESL/ELD" },
+    { value: "IEP", label: "IEP" },
+    { value: "Core", label: "Core" },
+    { value: "Immersion", label: "Immersion" },
+    { value: "Extended", label: "Extended" },
+    { value: "NA", label: "N/A" },
+  ];
+
+  const threeResults = [
+    { value: "PWD", label: "Progressing With Difficulty" },
+    { value: "PW", label: "Progressing Well" },
+    { value: "PVW", label: "Progressing Very Well" },
+  ];
+
   const formSchema = z.object({
-    studentName: z.string().min(2, {
-      message: "Student Name is mandatory.",
-    }),
+    studentName: z.string(),
     oen: z.string(),
     daysAbsent: z.string(),
     totalDaysAbsent: z.string(),
-    grade: z.string().max(2, {
-      message: "Grade cannot be more than 2 characters.",
-    }),
-    teacher: z.string().min(2, {
-      message: "Teacher Name is mandatory.",
-    }),
+    grade: z.string(),
+    teacher: z.string(),
     timesLate: z.string(),
     totalTimesLate: z.string(),
-    board: z.string().min(2, {
-      message: "Board Name is mandatory.",
-    }),
-    school: z.string().min(2, {
-      message: "School Name is mandatory.",
-    }),
-    address: z.string().min(2, {
-      message: "Address is mandatory.",
-    }),
-    address2: z.string().min(2, {
-      message: "Address is mandatory.",
-    }),
-    principal: z.string().min(2, {
-      message: "Principal Name is mandatory.",
-    }),
-    telephone: z.string().min(2, {
-      message: "Telephone is mandatory.",
-    }),
-    responsibility: z.string().max(1, {
-      message: "Responsibility cannot be more than 1 character.",
-    }),
-    organization: z.string().max(1, {
-      message: "Organization cannot be more than 1 character.",
-    }),
-    independentWork: z.string().max(1, {
-      message: "Independent Work cannot be more than 1 character.",
-    }),
-    collaboration: z.string().max(1, {
-      message: "Collaboration cannot be more than 1 character.",
-    }),
-    initiative: z.string().max(1, {
-      message: "Initiative cannot be more than 1 character.",
-    }),
-    selfRegulation: z.string().max(1, {
-      message: "Self Regulation cannot be more than 1 character.",
-    }),
-    strengthsNextSteps: z.string().min(2, {
-      message: "Strengths and Next Steps is mandatory.",
-    }),
+    board: z.string(),
+    school: z.string(),
+    address: z.string(),
+    address2: z.string(),
+    principal: z.string(),
+    telephone: z.string(),
+    responsibility: z.string(),
+    organization: z.string(),
+    independentWork: z.string(),
+    collaboration: z.string(),
+    initiative: z.string(),
+    selfRegulation: z.string(),
+    strengthsNextStepsLSWH: z.string(),
+    // second page
+    languagePlan: z.string(),
+    languageResult: z.string(),
+
+    frenchPlan: z.string(),
+    frenchResult: z.string(),
+
+    nativeLanguagePlan: z.string(),
+    nativeLanguageResult: z.string(),
+
+    mathPlan: z.string(),
+    mathResult: z.string(),
+
+    scienceAndTechnologyPlan: z.string(),
+    scienceAndTechnologyResult: z.string(),
+
+    socialStudiesPlan: z.string(),
+    socialStudiesResult: z.string(),
+
+    healthPlan: z.string(),
+    healthResult: z.string(),
+
+    physicalEducationPlan: z.string(),
+    physicalEducationResult: z.string(),
+
+    dancePlan: z.string(),
+    danceResult: z.string(),
+
+    dramaPlan: z.string(),
+    dramaResult: z.string(),
+
+    musicPlan: z.string(),
+    musicResult: z.string(),
+
+    visualArtsPlan: z.string(),
+    visualArtsResult: z.string(),
+
+    otherPlan: z.string(),
+    otherResult: z.string(),
+
+    strengthsNextStepsSubjects: z.string(),
   });
 
   const form = useForm({
@@ -101,7 +145,34 @@ export const ReportCard = () => {
       collaboration: "",
       initiative: "",
       selfRegulation: "",
-      strengthsNextSteps: "",
+      strengthsNextStepsLSWH: "",
+      languagePlan: "",
+      languageResult: "",
+      frenchPlan: "",
+      frenchResult: "",
+      nativeLanguagePlan: "",
+      nativeLanguageResult: "",
+      mathPlan: "",
+      mathResult: "",
+      scienceAndTechnologyPlan: "",
+      scienceAndTechnologyResult: "",
+      socialStudiesPlan: "",
+      socialStudiesResult: "",
+      healthPlan: "",
+      healthResult: "",
+      physicalEducationPlan: "",
+      physicalEducationResult: "",
+      dancePlan: "",
+      danceResult: "",
+      dramaPlan: "",
+      dramaResult: "",
+      musicPlan: "",
+      musicResult: "",
+      visualArtsPlan: "",
+      visualArtsResult: "",
+      otherPlan: "",
+      otherResult: "",
+      strengthsNextStepsSubjects: "",
     },
   });
 
@@ -457,7 +528,7 @@ export const ReportCard = () => {
           <div className="flex justify-evenly w-full">
             <FormField
               control={form.control}
-              name="strengthsNextSteps"
+              name="strengthsNextStepsLSWH"
               render={({ field }) => (
                 <FormItem className="w-5/6">
                   <FormControl>
@@ -466,7 +537,642 @@ export const ReportCard = () => {
                       <Button
                         type="button"
                         onClick={() => {
-                          getReportCardComments();
+                          getStrengthsAndNextStepsForTraits();
+                        }}>
+                        <LucideWand />
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="languagePlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Language</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="languageResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="frenchPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>French</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {sixPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="frenchResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="nativeLanguagePlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Native Language</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="nativeLanguageResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="mathPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Math</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="mathResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="scienceAndTechnologyPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Science and Technology</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="scienceAndTechnologyResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="socialStudiesPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Social Studies</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="socialStudiesResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="healthPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Health</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="healthResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="physicalEducationPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Physical Education</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threePlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="physicalEducationResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="dancePlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Dance</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {fourPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="danceResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="dramaPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Drama</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {fourPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dramaResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="musicPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Music</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {fourPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="musicResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="visualArtsPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Visual Arts</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {fourPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="visualArtsResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly gap-4">
+            <FormField
+              control={form.control}
+              name="otherPlan"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Other</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {fourPlans.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="otherResult"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Result</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                      {threeResults.map((item, index) => (
+                        <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                          <FormControl>
+                            <RadioGroupItem value={item.value} />
+                          </FormControl>
+                          <FormLabel>{item.label}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-evenly w-full">
+            <FormField
+              control={form.control}
+              name="strengthsNextStepsSubjects"
+              render={({ field }) => (
+                <FormItem className="w-5/6">
+                  <FormControl>
+                    <div className="flex items-end gap-3">
+                      <Textarea placeholder="Strengths and Next Steps for Subjects" {...field} />
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          getStrengthsAndNextStepsForSubjects();
                         }}>
                         <LucideWand />
                       </Button>

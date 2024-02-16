@@ -1,22 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignUpButton } from "@clerk/clerk-react";
+import useSubscriptionInfo from "@/hooks/useSubscriptionInfo";
+import { FaCheckCircle } from "react-icons/fa";
+import createCheckoutSession from "@/lib/createCheckoutSession";
 
 export default function Pricing() {
-  async function createCheckoutSession(priceId) {
-    const res = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        priceId: priceId,
-      }),
-    });
-
-    const session = await res.json();
-    window.location.href = session.url;
-  }
+  const subscriptionInfo = useSubscriptionInfo();
 
   return (
     <div className="flex justify-center py-10">
@@ -37,10 +27,13 @@ export default function Pricing() {
               <h2 className="mt-5 text-gray-500">$0</h2>
             </CardContent>
             <CardFooter className="justify-center">
-              <Button onClick={() => createCheckoutSession()}>
-                Sign Up
-                {/* <SignUpButton afterSignInUrl="/dashboard"></SignUpButton> */}
-              </Button>
+              {subscriptionInfo?.subscriptionPlan == "free" ? (
+                <FaCheckCircle size={30} />
+              ) : (
+                <Button asChild>
+                  <SignUpButton afterSignInUrl="/dashboard"></SignUpButton>
+                </Button>
+              )}
             </CardFooter>
           </Card>
 
@@ -57,9 +50,15 @@ export default function Pricing() {
               <h2 className="mt-5 text-gray-500">$10</h2>
             </CardContent>
             <CardFooter className="justify-center">
-              <Button asChild>
-                <SignUpButton redirectUrl="localhost:3000/dashboard?standard=true"></SignUpButton>
-              </Button>
+              {subscriptionInfo?.subscriptionPlan == "standard" ? (
+                <FaCheckCircle size={30} />
+              ) : subscriptionInfo?.user?.id ? (
+                <Button onClick={() => createCheckoutSession("standard")}>Upgrade Plan</Button>
+              ) : (
+                <Button asChild>
+                  <SignUpButton afterSignInUrl="/pricing"></SignUpButton>
+                </Button>
+              )}
             </CardFooter>
           </Card>
 
@@ -76,9 +75,15 @@ export default function Pricing() {
               <h2 className="mt-5 text-gray-500">$20</h2>
             </CardContent>
             <CardFooter className="justify-center">
-              <Button asChild>
-                <SignUpButton redirectUrl="localhost:3000/dashboard?standard=true"></SignUpButton>
-              </Button>
+              {subscriptionInfo?.subscriptionPlan == "professional" ? (
+                <FaCheckCircle size={30} />
+              ) : subscriptionInfo?.user?.id ? (
+                <Button onClick={() => createCheckoutSession("professional")}>Upgrade Plan</Button>
+              ) : (
+                <Button asChild>
+                  <SignUpButton afterSignInUrl="/pricing"></SignUpButton>
+                </Button>
+              )}
             </CardFooter>
           </Card>
         </div>

@@ -6,17 +6,26 @@ import { Link } from "react-router-dom";
 export default function Dashboard() {
   const { user } = useUser();
 
+  const userExists = (user) => {
+    // will check in db if user exists
+    console.log("Checking if user exists", user);
+  };
+  const createUser = (user) => {
+    // will create user in db
+    console.log("Creating user", user);
+  };
+
+  // The code in here will run once when the component mounts
   useEffect(() => {
+    if (!userExists(user)) {
+      createUser(user);
+    }
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
-
     if (query.get("success")) {
       alert("Order placed! You will receive an email confirmation.");
     }
-
-    if (query.get("canceled")) {
-      alert("Order canceled -- continue to shop around and checkout when you're ready.");
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dummyClasses = [
