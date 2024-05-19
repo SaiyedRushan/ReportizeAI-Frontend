@@ -10,7 +10,6 @@ export const Class = () => {
   const { id } = useParams();
 
   const dummyStudents = [
-    { id: 1, name: "Fulwala" },
     { id: 2, name: "Rushanshah Saiyed" },
     { id: 3, name: "Syed Ameen" },
     { id: 4, name: "Jane Smith" },

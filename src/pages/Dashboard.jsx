@@ -36,7 +36,6 @@ export default function Dashboard() {
   ];
 
   const dummyStudents = [
-    { id: 1, name: "Fulwala", classId: 1 },
     { id: 2, name: "Rushanshah Saiyed", classId: 1 },
     { id: 3, name: "Syed Ameen", classId: 1 },
     { id: 4, name: "Jane Smith", classId: 2 },
