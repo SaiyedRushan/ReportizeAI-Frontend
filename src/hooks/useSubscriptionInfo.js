@@ -29,6 +29,7 @@ const useSubscriptionInfo = () => {
   useEffect(() => {
     if (isSignedIn && isLoaded) setSubscriptionInfo({ user: user, subscriptionPlan: "free" });
     fetchSubscriptionInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn, isLoaded, user]);
 
   return subscriptionInfo;

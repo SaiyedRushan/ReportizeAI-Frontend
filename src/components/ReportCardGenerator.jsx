@@ -2,23 +2,32 @@ import { PDFDocument } from "pdf-lib";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
-export const ReportCardGenerator = ({ values }) => {
+export const ReportCardGenerator = ({ formObject }) => {
   const [filledPDF, setFilledPDF] = useState(null);
 
   const fillPDF = async () => {
-    const existingPdfBytes = await fetch("/reportCardGr1-6.pdf").then((res) => res.arrayBuffer());
+    // load pdf
+    const existingPdfBytes = await fetch("/rc1-6.pdf").then((res) => res.arrayBuffer());
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const form = pdfDoc.getForm();
+    const pdfForm = pdfDoc.getForm();
 
-    // fill in the form fields
-    Object.keys(values).forEach((key) => {
-      const field = form.getTextField(key);
-      field.setFontSize(10);
-      field.enableMultiline();
-      field.setText(String(values[key]));
+    // go through each form value and fill in the appropriate pdf form field
+    // pdf field names match the form field names in the frontend
+    Object.keys(formObject).forEach((fieldName) => {
+      const f = pdfForm.getField(fieldName);
+
+      if (f.constructor.name.includes("TextField")) {
+        f.setFontSize(10);
+        f.enableMultiline();
+        f.setText(String(formObject[fieldName]));
+      }
+      // else if (f.constructor.name.includes("RadioGroup")) {
+      //   f.clear();
+      //   f.select(String(formObject[fieldName])); // ! this is giving error, just need to set up the pdf radio buttons with custom export values for each option
+      // }
     });
 
-    form.flatten();
+    pdfForm.flatten();
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const filledPDFUrl = URL.createObjectURL(blob);
