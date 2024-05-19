@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ReportCardGenerator } from "@/components/ReportCardGenerator";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, LucideWand } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const ReportCard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +37,14 @@ export const ReportCard = () => {
       setIsLoading(false);
     }, 2000);
   }
+
+  useEffect(() => {
+    let formValues = localStorage.getItem("formValues");
+    if (formValues) {
+      formValues = JSON.parse(formValues);
+      Object.keys(formValues).forEach((key) => form.setValue(key, formValues[key]));
+    }
+  });
 
   const { id, studentId } = useParams();
 
@@ -191,7 +199,8 @@ export const ReportCard = () => {
   });
 
   function onSubmit(values) {
-    console.log(values);
+    const formValues = JSON.stringify(values);
+    localStorage.setItem("formValues", formValues);
   }
 
   return (
