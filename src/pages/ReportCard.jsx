@@ -11,21 +11,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { ReportCardGenerator } from "@/components/ReportCardGenerator";
 import { Textarea } from "@/components/ui/textarea";
-import { LucideWand } from "lucide-react";
+import { Loader2, LucideWand } from "lucide-react";
+import { useState } from "react";
 
 export const ReportCard = () => {
-  async function getStrengthsAndNextStepsForTraits() {
-    form.setValue(
-      "strengthsNextStepsLSWH",
-      `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
-    );
-  }
+  const [isLoading, setIsLoading] = useState(false);
 
+  async function getStrengthsAndNextStepsForTraits() {
+    setIsLoading(true);
+    setTimeout(() => {
+      form.setValue(
+        "strengthsNextStepsLSWH",
+        `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
+      );
+      setIsLoading(false);
+    }, 2000);
+  }
   async function getStrengthsAndNextStepsForSubjects() {
-    form.setValue(
-      "strengthsNextStepsSubjects",
-      `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
-    );
+    setIsLoading(true);
+    setTimeout(() => {
+      form.setValue(
+        "strengthsNextStepsSubjects",
+        `1. Despite being absent for 5 days, the student excels in taking responsibility for their actions. They consistently complete their assignments and come prepared to class.\n2. Although the student has been late 3 times, they demonstrate excellent organizational skills in managing their belongings and keeping their work area tidy.\n3. The student showcases satisfactory levels of independence. They are able to complete tasks on their own but may benefit from additional guidance when faced with more complex assignments.\n4. The student demonstrates a need for improvement in collaboration. While they work well individually, they struggle to effectively contribute and cooperate within group activities.\n5. On the other hand, the student's initiative is truly commendable. They actively seek out opportunities to learn and engage in class discussions.\n6. It is evident that the student possesses great strengths in math and English. They consistently display a strong understanding of these subjects and consistently achieve good scores.\n7. The student also excels in memory. They are able to retain information and recall it accurately during assessments.\n8. However, there is a need for improvement in science. The student may benefit from additional support and guidance in this subject to enhance their understanding and performance.\n9. The student should also continue working on developing their independence. Encouraging them to tackle more challenging tasks on their own will help foster a greater sense of confidence.\n10. Finally, the student should actively work on improving their collaboration skills. Encouraging them to actively listen to and value the ideas of their peers will enhance their ability to work effectively in a group setting.`
+      );
+      setIsLoading(false);
+    }, 2000);
   }
 
   const { id, studentId } = useParams();
@@ -41,7 +51,6 @@ export const ReportCard = () => {
     { value: "French", label: "French" },
     { value: "NA", label: "N/A" },
   ];
-
   const sixPlans = [
     { value: "ESLELD", label: "ESL/ELD" },
     { value: "IEP", label: "IEP" },
@@ -50,11 +59,16 @@ export const ReportCard = () => {
     { value: "Extended", label: "Extended" },
     { value: "NA", label: "N/A" },
   ];
-
   const threeResults = [
-    { value: "PWD", label: "Progressing With Difficulty" },
-    { value: "PW", label: "Progressing Well" },
-    { value: "PVW", label: "Progressing Very Well" },
+    { value: "1", label: "Progressing With Difficulty" },
+    { value: "2", label: "Progressing Well" },
+    { value: "3", label: "Progressing Very Well" },
+  ];
+  const selectItems = [
+    { value: "E", label: "E - Excellent" },
+    { value: "G", label: "G - Good" },
+    { value: "S", label: "S - Satisfactory" },
+    { value: "N", label: "N - Needs improvement" },
   ];
 
   const formSchema = z.object({
@@ -178,15 +192,7 @@ export const ReportCard = () => {
 
   function onSubmit(values) {
     console.log(values);
-    // console.log(form);
   }
-
-  const selectItems = [
-    { value: "E", label: "E - Excellent" },
-    { value: "G", label: "G - Good" },
-    { value: "S", label: "S - Satisfactory" },
-    { value: "N", label: "N - Needs improvement" },
-  ];
 
   return (
     <div className="flex flex-col mx-20 p-4 my-3  border-2">
@@ -535,11 +541,13 @@ export const ReportCard = () => {
                     <div className="flex items-end gap-3">
                       <Textarea placeholder="Strengths and Next Steps" {...field} />
                       <Button
+                        disabled={isLoading ? true : false}
                         type="button"
                         onClick={() => {
                           getStrengthsAndNextStepsForTraits();
-                        }}>
-                        <LucideWand />
+                        }}
+                      >
+                        {(isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />) || <LucideWand />}
                       </Button>
                     </div>
                   </FormControl>
@@ -1173,7 +1181,8 @@ export const ReportCard = () => {
                         type="button"
                         onClick={() => {
                           getStrengthsAndNextStepsForSubjects();
-                        }}>
+                        }}
+                      >
                         <LucideWand />
                       </Button>
                     </div>
@@ -1191,7 +1200,9 @@ export const ReportCard = () => {
           </div>
         </form>
       </Form>
-      <ReportCardGenerator values={form.getValues()} />
+
+      {/* THIS GENERATES THE REPORT CARD */}
+      <ReportCardGenerator formObject={form.getValues()} />
     </div>
   );
 };
