@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignUpButton } from "@clerk/clerk-react";
+import { SignUpButton, useAuth } from "@clerk/clerk-react";
 import useSubscriptionInfo from "@/hooks/useSubscriptionInfo";
 import { FaCheckCircle } from "react-icons/fa";
 import createCheckoutSession from "@/lib/createCheckoutSession";
 
 export default function Pricing() {
   const subscriptionInfo = useSubscriptionInfo();
+  const { getToken } = useAuth()
 
   return (
     <div className="flex justify-center py-10">
@@ -53,7 +54,7 @@ export default function Pricing() {
               {subscriptionInfo?.subscriptionPlan == "standard" ? (
                 <FaCheckCircle size={30} />
               ) : subscriptionInfo?.user?.id ? (
-                <Button onClick={() => createCheckoutSession("standard")}>Upgrade Plan</Button>
+                <Button onClick={async () => createCheckoutSession("standard", await getToken())}>Upgrade Plan</Button>
               ) : (
                 <Button asChild>
                   <SignUpButton afterSignInUrl="/pricing"></SignUpButton>
@@ -78,7 +79,7 @@ export default function Pricing() {
               {subscriptionInfo?.subscriptionPlan == "professional" ? (
                 <FaCheckCircle size={30} />
               ) : subscriptionInfo?.user?.id ? (
-                <Button onClick={() => createCheckoutSession("professional")}>Upgrade Plan</Button>
+                <Button onClick={async () => createCheckoutSession("professional", await getToken())}>Upgrade Plan</Button>
               ) : (
                 <Button asChild>
                   <SignUpButton afterSignInUrl="/pricing"></SignUpButton>
