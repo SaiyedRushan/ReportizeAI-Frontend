@@ -16,8 +16,7 @@ const useSubscriptionInfo = () => {
         },
       });
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        await response.json();
       } else {
         throw new Error("Failed to fetch subscription info");
       }
