@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 export default function Dashboard() {
   const { user } = useUser();
 
-  const userExists = (user) => {
+  const userExists = () => {
     // will check in db if user exists
-    console.log("Checking if user exists", user);
+    console.log("Checking if user exists");
   };
-  const createUser = (user) => {
+  const createUser = () => {
     // will create user in db
-    console.log("Creating user", user);
+    console.log("Creating user");
   };
 
   // The code in here will run once when the component mounts
