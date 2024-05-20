@@ -8,7 +8,7 @@ const useSubscriptionInfo = () => {
 
   const fetchSubscriptionInfo = async () => {
     try {
-      const response = await fetch("/api/users/subscriptionInfo", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/subscriptionInfo`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${await getToken()}`,
