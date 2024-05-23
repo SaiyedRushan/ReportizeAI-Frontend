@@ -4,10 +4,19 @@ import { SignUpButton, useAuth } from "@clerk/clerk-react";
 import useSubscriptionInfo from "@/hooks/useSubscriptionInfo";
 import { FaCheckCircle } from "react-icons/fa";
 import createCheckoutSession from "@/lib/createCheckoutSession";
+import { useEffect } from "react";
+import VanillaTilt from "vanilla-tilt";
 
 export default function Pricing() {
   const subscriptionInfo = useSubscriptionInfo();
-  const { getToken } = useAuth()
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+      max: 20,
+      speed: 100,
+    });
+  }, []);
 
   return (
     <div className="flex justify-center py-10">
@@ -15,7 +24,7 @@ export default function Pricing() {
         <h1 className="text-3xl font-bold mb-4">Pricing Plans </h1>
         <div className="flex justify-between gap-10 flex-col md:flex-row">
           {/* FREE PLAN */}
-          <Card className="md:w-[200px]">
+          <Card className="md:w-[200px] card">
             <CardHeader>
               <CardTitle>Free</CardTitle>
             </CardHeader>
@@ -39,7 +48,7 @@ export default function Pricing() {
           </Card>
 
           {/* PROFESSIONAL */}
-          <Card className="md:w-[200px]">
+          <Card className="md:w-[200px] card">
             <CardHeader>
               <CardTitle>Standard</CardTitle>
             </CardHeader>
@@ -64,7 +73,7 @@ export default function Pricing() {
           </Card>
 
           {/* ENTERPRISE */}
-          <Card className="md:w-[200px]">
+          <Card className="md:w-[200px] card">
             <CardHeader>
               <CardTitle>Professional</CardTitle>
             </CardHeader>

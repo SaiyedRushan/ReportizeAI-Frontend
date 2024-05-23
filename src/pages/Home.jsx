@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import VanillaTilt from "vanilla-tilt";
 
 export default function Home() {
+  useEffect(() => {
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+      max: 10,
+      speed: 100,
+    });
+  }, []);
+
   return (
     <div className="">
       {/* hero section */}
@@ -32,8 +41,9 @@ export default function Home() {
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">Choose Your Plan</h2>
           <div className="flex flex-wrap justify-center">
+            {/* free card */}
             <div className="w-full md:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 card" data-tilt>
                 <h3 className="text-2xl font-semibold mb-4">Free</h3>
                 <p className="text-lg mb-4">Basic features to get you started. 10 Report card credits. Manage your class and students.</p>
                 <Button>
@@ -41,8 +51,10 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+
+            {/* standard card */}
             <div className="w-full md:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 card">
                 <h3 className="text-2xl font-semibold mb-4">Standard</h3>
                 <p className="text-lg mb-4">20 Report card credits and class and student management.</p>
                 <Button>
@@ -50,8 +62,10 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+
+            {/* professsional card */}
             <div className="w-full md:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 card">
                 <h3 className="text-2xl font-semibold mb-4">Professional</h3>
                 <p className="text-lg mb-4">40 Report card credits. And state-of-the-art AI to help you write better and more personalized feedback faster.</p>
                 <Button>
