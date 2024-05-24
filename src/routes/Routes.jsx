@@ -9,6 +9,7 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import Classes from "@/pages/Classes";
 import { Class } from "@/pages/Class";
 import { ReportCard } from "@/pages/ReportCard";
+import LessonPlan from "@/pages/LessonPlan";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "/dashboard/lesson-plan",
+            element: <LessonPlan />,
           },
           {
             path: "/dashboard/class",

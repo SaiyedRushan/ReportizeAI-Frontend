@@ -26,7 +26,7 @@ function Navbar() {
   const dashboardItems = [
     { name: "Dashboard", link: "/dashboard", icon: <LucideHome className="mr-2" /> },
     { name: "Classes", link: "/dashboard/class", icon: <LucideSchool className="mr-2" /> },
-    { name: "Lesson Plans", link: "/dashboard/lessonPlans", icon: <Book className="mr-2" /> },
+    { name: "Lesson Plans", link: "/dashboard/lesson-plan", icon: <Book className="mr-2" /> },
     { name: "Upgrade Plan", link: "/pricing", icon: <LucideArrowBigUpDash className="mr-2" /> },
     { name: "Settings", link: "/settings", icon: <LucideSettings className="mr-2" /> },
   ];
