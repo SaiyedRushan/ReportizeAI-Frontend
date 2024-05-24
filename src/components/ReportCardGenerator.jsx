@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFRadioGroup, PDFTextField } from "pdf-lib";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
@@ -11,19 +11,17 @@ export const ReportCardGenerator = ({ formObject }) => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const pdfForm = pdfDoc.getForm();
 
-    console.log(formObject);
     // go through each form value and fill in the appropriate pdf form field
     // pdf field names match the form field names in the frontend
     Object.keys(formObject).forEach((fieldName) => {
       const f = pdfForm.getField(fieldName);
-      console.log(f);
 
-      if (f.constructor.name.includes("TextField")) {
+      if (f instanceof PDFTextField) {
         f.setFontSize(10);
         f.enableMultiline();
         f.setText(String(formObject[fieldName]));
       }
-      // else if (f.constructor.name.includes("RadioGroup")) {
+      // else if (f instanceof PDFRadioGroup) {
       //   f.clear();
       //   f.select(String(formObject[fieldName])); // ! this is giving error, just need to set up the pdf radio buttons with custom export values for each option
       // }
