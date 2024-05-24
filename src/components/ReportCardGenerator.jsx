@@ -11,10 +11,12 @@ export const ReportCardGenerator = ({ formObject }) => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const pdfForm = pdfDoc.getForm();
 
+    console.log(formObject);
     // go through each form value and fill in the appropriate pdf form field
     // pdf field names match the form field names in the frontend
     Object.keys(formObject).forEach((fieldName) => {
       const f = pdfForm.getField(fieldName);
+      console.log(f);
 
       if (f.constructor.name.includes("TextField")) {
         f.setFontSize(10);

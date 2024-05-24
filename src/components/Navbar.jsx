@@ -7,7 +7,7 @@ import { LucideX } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SignInButton, SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { LucideHome } from "lucide-react";
-import { LucideSettings } from "lucide-react";
+// import { LucideSettings } from "lucide-react";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LucideSchool } from "lucide-react";
 import { Book } from "lucide-react";
@@ -28,7 +28,7 @@ function Navbar() {
     { name: "Classes", link: "/dashboard/class", icon: <LucideSchool className="mr-2" /> },
     { name: "Lesson Plans", link: "/dashboard/lesson-plan", icon: <Book className="mr-2" /> },
     { name: "Upgrade Plan", link: "/pricing", icon: <LucideArrowBigUpDash className="mr-2" /> },
-    { name: "Settings", link: "/settings", icon: <LucideSettings className="mr-2" /> },
+    // { name: "Settings", link: "/settings", icon: <LucideSettings className="mr-2" /> },
   ];
 
   function dashboardSidebar() {

@@ -33,6 +33,7 @@ export default function Home() {
             <li className="text-lg mb-2">Generates report cards using the Ontario template</li>
             <li className="text-lg mb-2">Save progress feature for convenience</li>
             <li className="text-lg mb-2">Professional version includes AI comments generator</li>
+            <li className="text-lg mb-2">AI Report Card Generator</li>
           </ul>
         </div>
       </section>
